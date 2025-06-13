@@ -7,7 +7,11 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="settings-box">
+        <label for="speed-range">Speed: <span id="speed-display">1</span>%</label>
+        <input type="range" id="speed-slider" min="0" max="100" step="1" value="1">
+        <button onclick="if (confirm('Reload?')) window.location.reload()">Reload (if zoom breaks)</button>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

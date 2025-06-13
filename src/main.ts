@@ -29,6 +29,7 @@ export const addRenderLoopCallback = (callback: (() => void)) => {
 }
 
 let timeStep = 0
+let timeStepIncrement = 0.0001
 export const getTimeStep = () => timeStep
 
 const Sun = createSun(scene)
@@ -44,18 +45,25 @@ const Neptune = createNeptune(scene)
 const objects = [Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune]
 
 let focusedObjectIndex = 0
-const cameraOffset = new THREE.Vector3(0, 0, 300)
+let relativeCameraOffset = new THREE.Vector3(0, 0, 100)
 
+function focusOnObject() {
+    const focus = objects[focusedObjectIndex]
+    relativeCameraOffset = camera.position.clone().sub(controls.target)
+    controls.target.copy(focus.position.clone())
+}
 
 function slideRight() {
     if (focusedObjectIndex < objects.length - 1) {
         focusedObjectIndex++
+        focusOnObject()
     }
 }
 
 function slideLeft() {
     if (focusedObjectIndex > 0) {
         focusedObjectIndex--
+        focusOnObject()
     }
 }
 
@@ -66,11 +74,28 @@ window.addEventListener('keydown', (e) => {
 })
 
 const renderLoop = () => {
-    timeStep += 0.01
+    timeStep += timeStepIncrement
+
+    const focusObject = objects[focusedObjectIndex]
+
+    controls.target.copy(focusObject.position)
+    camera.position.copy(focusObject.position.clone().add(relativeCameraOffset))
+
     controls.update()
+    relativeCameraOffset = camera.position.clone().sub(controls.target)
+
     renderLoopCallbacks.forEach(cb => cb())
-    camera.lookAt(objects[focusedObjectIndex].position)
     renderer.render(scene, camera)
 }
 
 renderer.setAnimationLoop(renderLoop)
+
+const speedDisplay = document.getElementById("speed-display") as HTMLSpanElement
+const speedSlider = document.getElementById("speed-slider") as HTMLInputElement
+
+speedSlider?.addEventListener("change", (e: Event) => {
+    const input = e.target as HTMLInputElement
+    const percent = Number(input.value)
+    timeStepIncrement = 0.0001 * percent
+    speedDisplay.innerText = percent.toString()
+})
