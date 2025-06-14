@@ -15,7 +15,7 @@ canvas {
 	position: absolute;
 	background-color: white;
 	height: 8rem;
-	width: 15rem;
+	width: 20rem;
 	border-radius: 0.25rem;
 	top: 1rem;
 	left: 1rem;
@@ -23,11 +23,13 @@ canvas {
 	align-items: center;
 	justify-content: space-around;
 	flex-direction: column;
+	user-select: none;
 }
 
 .settings-speed-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	gap: 0.5rem;
 }
 
 .settings-pause-container {

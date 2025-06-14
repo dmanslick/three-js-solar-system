@@ -113,14 +113,18 @@ const renderLoop = () => {
 
 renderer.setAnimationLoop(renderLoop)
 
-const speedDisplay = document.getElementById('speed-display') as HTMLSpanElement
-const speedSlider = document.getElementById('speed-slider') as HTMLInputElement
+const speedInput = document.getElementById('speed-input') as HTMLInputElement
 
-speedSlider?.addEventListener('change', (e: Event) => {
+speedInput?.addEventListener('change', (e: Event) => {
     const input = e.target as HTMLInputElement
-    const percent = Number(input.value)
-    timeStepIncrement = BASE_TIME_STEP * percent
-    speedDisplay.innerText = percent.toString()
+    const multiplier = Number(input.value)
+    timeStepIncrement = BASE_TIME_STEP * multiplier
+})
+
+speedInput.addEventListener('beforeinput', (e: InputEvent) => {
+    if (e.data && !/^\d+$/.test(e.data)) {
+        e.preventDefault()
+    }
 })
 
 let stoppedTimeIncrementStep = 0
@@ -131,12 +135,12 @@ const resumeButton = document.getElementById('resume-button')
 stopButton?.addEventListener('click', () => {
     stoppedTimeIncrementStep = timeStepIncrement
     timeStepIncrement = 0
-    speedSlider.disabled = true
+    speedInput.disabled = true
 })
 
 resumeButton?.addEventListener('click', () => {
     timeStepIncrement = stoppedTimeIncrementStep
-    speedSlider.disabled = false
+    speedInput.disabled = false
 })
 
 window.addEventListener('resize', () => {

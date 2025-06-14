@@ -48,7 +48,7 @@ function createOrbitOutline(scene: THREE.Scene, centerX: number, centerY: number
 
     orbitOutlines.add({ enable, disable })
 
-    return () => scene.remove(orbitEllipse)
+    return orbitEllipse
 }
 
 function createBasicSatellite(scene: THREE.Scene, parent: THREE.Mesh, radius: number, distance: number, color: THREE.ColorRepresentation, textureMapURL?: string) {
@@ -63,13 +63,12 @@ function createBasicSatellite(scene: THREE.Scene, parent: THREE.Mesh, radius: nu
     const satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial)
     scene.add(satellite)
 
-    let removeLastOrbitOutline = createOrbitOutline(scene, parent.position.x, parent.position.y, distance, distance, 'magenta')
+    const satelliteOrbitOutline = createOrbitOutline(scene, 0, 0, distance, distance, 'magenta')
 
     addRenderLoopCallback((timeStep) => {
-        removeLastOrbitOutline()
         const parentX = parent.position.x
         const parentZ = parent.position.z
-        removeLastOrbitOutline = createOrbitOutline(scene, parentX, parentZ, distance, distance, 'magenta')
+        satelliteOrbitOutline.position.set(parent.position.x, parent.position.y, parent.position.z)
         satellite.position.set(parentX - (distance * Math.cos(timeStep * (1000 / distance))), 0, parentZ - (distance * Math.sin(timeStep * (1000 / distance)))) // https://www.desmos.com/calculator/imgfwntxx4
     })
 

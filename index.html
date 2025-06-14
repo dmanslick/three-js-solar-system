@@ -8,14 +8,14 @@
   <body>
     <div class="settings-container">
         <div class="settings-speed-container">
-            <label for="speed-range">Speed: <span id="speed-display">1</span>%</label>
-            <input type="range" id="speed-slider" min="0" max="1000" step="1" value="1">
+            <label for="speed-input">Speed Multiplier:</label>
+            <input id="speed-input" type="number" value="1">
         </div>
         <div class="settings-pause-container">
             <button type="button" id="stop-button">Stop</button>
             <button type="button" id="resume-button">Resume</button>
         </div>
-        <button type="button" onclick="if (confirm('Reload?')) window.location.reload()">Reload (if zoom breaks)</button>
+        <button type="button" onclick="if (confirm('Reload?')) window.location.reload()">Reload (if something breaks)</button>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
