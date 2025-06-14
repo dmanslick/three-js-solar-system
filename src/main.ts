@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { createEarth, createJupiter, createMars, createMercury, createMoon, createNeptune, createSaturn, createSun, createUranus, createVenus } from './objects'
+import { createEarth, createJupiter, createMars, createMercury, createMoon, createNeptune, createSaturn, createSun, createUranus, createVenus, disableOrbitOutlines, enableOrbitOutlines } from './objects'
 import './style.css'
 import { EffectComposer, RenderPass, TrackballControls, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
 
@@ -77,9 +77,21 @@ function slideLeft() {
     }
 }
 
+let orbitOutlinesEnabled = true
+
+function toggleOrbitOutlines() {
+    orbitOutlinesEnabled = !orbitOutlinesEnabled
+    if (orbitOutlinesEnabled) {
+        enableOrbitOutlines()
+    } else {
+        disableOrbitOutlines()
+    }
+}
+
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') slideRight()
     if (e.key === 'ArrowLeft') slideLeft()
+    if (e.key === 'o') toggleOrbitOutlines()
     console.log('Focused index:', focusedObjectIndex)
 })
 

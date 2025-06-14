@@ -2,6 +2,16 @@ import * as THREE from 'three'
 import { EarthConfig, JupiterConfig, MarsConfig, MercuryConfig, MoonConfig, NeptuneConfig, SaturnConfig, SunConfig, UranusConfig, VenusConfig } from './configs'
 import { addRenderLoopCallback } from './main'
 
+const orbitOutlines = new Set<{ enable: () => void, disable: () => void }>()
+
+export function disableOrbitOutlines() {
+    orbitOutlines.forEach(outline => outline.disable())
+}
+
+export function enableOrbitOutlines() {
+    orbitOutlines.forEach(outline => outline.enable())
+}
+
 function createBasicPlanet(scene: THREE.Scene, radius: number, distance: number, color: THREE.ColorRepresentation, textureMapURL?: string) {
     let planetMaterial = new THREE.MeshBasicMaterial({ color })
 
@@ -32,6 +42,12 @@ function createOrbitOutline(scene: THREE.Scene, centerX: number, centerY: number
     const orbitMaterial = new THREE.LineBasicMaterial({ color })
     const orbitEllipse = new THREE.LineLoop(orbitGeometry, orbitMaterial)
     scene.add(orbitEllipse)
+
+    const enable = () => orbitEllipse.material = new THREE.LineBasicMaterial({ color })
+    const disable = () => orbitEllipse.material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0 })
+
+    orbitOutlines.add({ enable, disable })
+
     return () => scene.remove(orbitEllipse)
 }
 
