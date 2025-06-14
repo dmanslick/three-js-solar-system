@@ -1,19 +1,26 @@
 import * as THREE from 'three'
 import { createEarth, createJupiter, createMars, createMercury, createMoon, createNeptune, createSaturn, createSun, createUranus, createVenus } from './objects'
 import './style.css'
-import { TrackballControls } from 'three/examples/jsm/Addons.js'
+import { EffectComposer, RenderPass, TrackballControls, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
 
 const scene = new THREE.Scene()
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1e8)
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1e10)
 camera.position.z = 1000
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.75)
 scene.add(ambientLight)
 
+
 const renderer = new THREE.WebGLRenderer({ powerPreference: 'high-performance' })
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
+
+const composer = new EffectComposer(renderer)
+const renderPass = new RenderPass(scene, camera)
+composer.addPass(renderPass)
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85) // sun bloom
+composer.addPass(bloomPass)
 
 const controls = new TrackballControls(camera, renderer.domElement)
 // controls.rotateSpeed = 5.0
@@ -29,8 +36,10 @@ export const addRenderLoopCallback = (callback: ((timeStep: number) => void)) =>
     renderLoopCallbacks.push(callback)
 }
 
+const BASE_TIME_STEP = 0.1
+
 let timeStep = 0
-let timeStepIncrement = 0.0001
+let timeStepIncrement = BASE_TIME_STEP
 
 const Sun = createSun(scene)
 const Mercury = createMercury(scene)
@@ -76,6 +85,7 @@ window.addEventListener('keydown', (e) => {
 
 const renderLoop = () => {
     timeStep += timeStepIncrement
+    renderLoopCallbacks.forEach(cb => cb(timeStep))
 
     const focusObject = objects[focusedObjectIndex]
 
@@ -85,19 +95,19 @@ const renderLoop = () => {
     controls.update()
     relativeCameraOffset = camera.position.clone().sub(controls.target)
 
-    renderLoopCallbacks.forEach(cb => cb(timeStep))
-    renderer.render(scene, camera)
+    // renderer.render(scene, camera)
+    composer.render()
 }
 
 renderer.setAnimationLoop(renderLoop)
 
-const speedDisplay = document.getElementById("speed-display") as HTMLSpanElement
-const speedSlider = document.getElementById("speed-slider") as HTMLInputElement
+const speedDisplay = document.getElementById('speed-display') as HTMLSpanElement
+const speedSlider = document.getElementById('speed-slider') as HTMLInputElement
 
-speedSlider?.addEventListener("change", (e: Event) => {
+speedSlider?.addEventListener('change', (e: Event) => {
     const input = e.target as HTMLInputElement
     const percent = Number(input.value)
-    timeStepIncrement = 0.0001 * percent
+    timeStepIncrement = BASE_TIME_STEP * percent
     speedDisplay.innerText = percent.toString()
 })
 
@@ -119,4 +129,6 @@ resumeButton?.addEventListener('click', () => {
 
 window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
 })

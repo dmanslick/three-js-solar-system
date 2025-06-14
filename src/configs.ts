@@ -4,9 +4,9 @@ interface Config {
 }
 
 // https://www.jpl.nasa.gov/_edu/pdfs/scaless_reference.pdf
-const SIZE_SCALAR = 0.0005
-const DISTANCE_SCALAR = 0.00001
-const PLANET_SCALAR = 4
+const SIZE_SCALAR = 1
+const DISTANCE_SCALAR = 1
+const PLANET_SCALAR = 1
 
 const makeConfig = (diameter: number, distance: number): Config => {
     return { radius: diameter / 2 * SIZE_SCALAR, distance: distance * DISTANCE_SCALAR }
