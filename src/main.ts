@@ -54,13 +54,47 @@ const Moon = createMoon(scene, Earth)
 
 const objects = [Sun, Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, Uranus, Neptune]
 
+interface Info {
+    title: string,
+    blurb: string
+}
+
+const infoMap = new Map<THREE.Mesh, Info>()
+
+infoMap.set(Sun, { title: 'The Sun', blurb: 'The sun, not much else too it...' })
+infoMap.set(Mercury, { title: 'Mercury', blurb: 'No one cares about this one' })
+infoMap.set(Venus, { title: 'Venus', blurb: 'Very thick atmosphere' })
+infoMap.set(Earth, { title: 'Earth', blurb: 'You are here' })
+infoMap.set(Moon, { title: 'The Moon', blurb: 'Have you ever seen the dark side?' })
+infoMap.set(Mars, { title: 'Mars', blurb: 'The red one' })
+infoMap.set(Jupiter, { title: 'Jupiter', blurb: 'Nice spot' })
+infoMap.set(Saturn, { title: 'Saturn', blurb: 'Rings are cool' })
+infoMap.set(Uranus, { title: 'Uranus', blurb: 'I like the color of this one' })
+infoMap.set(Neptune, { title: 'Neptune', blurb: 'The last planet, according to some...' })
+
 let focusedObjectIndex = 0
 let relativeCameraOffset = new THREE.Vector3(0, 0, 100)
+
+const infoTitle = document.getElementById('info-title')!
+const infoBlurb = document.getElementById('info-blurb')!
+const infoContainer = document.getElementById('info-container')!
+const toggleInfoButton = document.getElementById('toggle-info')
+
+function toggleInfo() {
+    if (infoContainer.style.display == 'none') {
+        infoContainer.style.display = 'block'
+    } else {
+        infoContainer.style.display = 'none'
+    }
+}
 
 function focusOnObject() {
     const focus = objects[focusedObjectIndex]
     relativeCameraOffset = camera.position.clone().sub(controls.target)
     controls.target.copy(focus.position.clone())
+    const data = infoMap.get(focus)!
+    infoTitle.innerText = data.title
+    infoBlurb.innerText = data.blurb
 }
 
 function slideRight() {
@@ -88,10 +122,13 @@ function toggleOrbitOutlines() {
     }
 }
 
+toggleInfoButton?.addEventListener('click', toggleInfo)
+
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') slideRight()
     if (e.key === 'ArrowLeft') slideLeft()
     if (e.key === 'o') toggleOrbitOutlines()
+    if (e.key === 'i') toggleInfo()
     console.log('Focused index:', focusedObjectIndex)
 })
 
@@ -147,4 +184,10 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
     camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix()
+})
+
+window.addEventListener('load', () => {
+    const data = infoMap.get(Sun)!
+    infoTitle.innerText = data.title
+    infoBlurb.innerText = data.blurb
 })

@@ -7,15 +7,22 @@
   </head>
   <body>
     <div class="settings-container">
-        <div class="settings-speed-container">
+        <div>
             <label for="speed-input">Speed Multiplier:</label>
             <input id="speed-input" type="number" value="1">
         </div>
-        <div class="settings-pause-container">
+        <div>
             <button type="button" id="stop-button">Stop</button>
             <button type="button" id="resume-button">Resume</button>
         </div>
-        <button type="button" onclick="if (confirm('Reload?')) window.location.reload()">Reload (if something breaks)</button>
+        <div>
+            <button type="button" id="toggle-info">Toggle Info</button>
+            <button type="button" onclick="if (confirm('Reload?')) window.location.reload()">Reload (if something breaks)</button>
+        </div>
+    </div>
+    <div id="info-container">
+        <p id="info-title"></p>
+        <p id="info-blurb"></p>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
