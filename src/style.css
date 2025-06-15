@@ -53,10 +53,15 @@ button:active {
 #info-container {
 	bottom: 1rem;
 	right: 1rem;
+	display: flex;
+	flex-direction: column;
+	min-height: 8rem;
+	justify-content: space-around;
 }
 
 #info-title,
 #info-blurb {
+	margin: 0;
 	margin-left: 1rem;
 }
 

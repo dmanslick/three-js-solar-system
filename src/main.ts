@@ -171,18 +171,23 @@ speedInput.addEventListener('beforeinput', (e: InputEvent) => {
 })
 
 let stoppedTimeIncrementStep = 0
+let stopped = false
 
 const stopButton = document.getElementById('stop-button')
 const resumeButton = document.getElementById('resume-button')
 
 stopButton?.addEventListener('click', () => {
-    stoppedTimeIncrementStep = timeStepIncrement
+    if (!stopped) {
+        stoppedTimeIncrementStep = timeStepIncrement
+        stopped = true
+    }
     timeStepIncrement = 0
     speedInput.disabled = true
 })
 
 resumeButton?.addEventListener('click', () => {
     timeStepIncrement = stoppedTimeIncrementStep
+    stopped = false
     speedInput.disabled = false
 })
 
