@@ -85,7 +85,7 @@ const nextObjectButton = document.getElementById('next-object')!
 
 function toggleInfo() {
     if (infoContainer.style.display == 'none') {
-        infoContainer.style.display = 'block'
+        infoContainer.style.display = 'flex'
     } else {
         infoContainer.style.display = 'none'
     }
