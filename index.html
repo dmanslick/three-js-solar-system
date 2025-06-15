@@ -11,12 +11,17 @@
             <label for="speed-input">Speed Multiplier:</label>
             <input id="speed-input" type="number" value="1">
         </div>
-        <div>
-            <button type="button" id="stop-button">Stop</button>
-            <button type="button" id="resume-button">Resume</button>
+        <div class="controls-container">
+            <div class="controls-row">
+                <button type="button" id="stop-button">Stop</button>
+                <button type="button" id="resume-button">Resume</button>
+            </div>
+            <div class="controls-row">
+                <button type="button" id="toggle-info">Toggle Info</button>
+                <button type="button" id="toggle-orbit-outlines">Toggle Orbit Outlines</button>
+            </div>
         </div>
         <div>
-            <button type="button" id="toggle-info">Toggle Info</button>
             <button type="button" onclick="if (confirm('Reload?')) window.location.reload()">Reload (if something breaks)</button>
         </div>
     </div>

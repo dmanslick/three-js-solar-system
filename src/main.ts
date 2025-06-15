@@ -78,7 +78,8 @@ let relativeCameraOffset = new THREE.Vector3(0, 0, 100)
 const infoTitle = document.getElementById('info-title')!
 const infoBlurb = document.getElementById('info-blurb')!
 const infoContainer = document.getElementById('info-container')!
-const toggleInfoButton = document.getElementById('toggle-info')
+const toggleInfoButton = document.getElementById('toggle-info')!
+const toggleOrbitOutlinesButton = document.getElementById('toggle-orbit-outlines')!
 
 function toggleInfo() {
     if (infoContainer.style.display == 'none') {
@@ -122,7 +123,8 @@ function toggleOrbitOutlines() {
     }
 }
 
-toggleInfoButton?.addEventListener('click', toggleInfo)
+toggleInfoButton.addEventListener('click', toggleInfo)
+toggleOrbitOutlinesButton.addEventListener('click', toggleOrbitOutlines)
 
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') slideRight()
