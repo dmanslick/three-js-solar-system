@@ -65,7 +65,7 @@ infoMap.set(Sun, { title: 'The Sun', blurb: 'The sun, not much else too it...' }
 infoMap.set(Mercury, { title: 'Mercury', blurb: 'No one cares about this one' })
 infoMap.set(Venus, { title: 'Venus', blurb: 'Very thick atmosphere' })
 infoMap.set(Earth, { title: 'Earth', blurb: 'You are here' })
-infoMap.set(Moon, { title: 'The Moon', blurb: 'Have you ever seen the dark side?' })
+infoMap.set(Moon, { title: 'The Moon', blurb: 'Have you ever seen the far side?' })
 infoMap.set(Mars, { title: 'Mars', blurb: 'The red one' })
 infoMap.set(Jupiter, { title: 'Jupiter', blurb: 'Nice spot' })
 infoMap.set(Saturn, { title: 'Saturn', blurb: 'Rings are cool' })
@@ -80,6 +80,8 @@ const infoBlurb = document.getElementById('info-blurb')!
 const infoContainer = document.getElementById('info-container')!
 const toggleInfoButton = document.getElementById('toggle-info')!
 const toggleOrbitOutlinesButton = document.getElementById('toggle-orbit-outlines')!
+const previousObjectButton = document.getElementById('previous-object')!
+const nextObjectButton = document.getElementById('next-object')!
 
 function toggleInfo() {
     if (infoContainer.style.display == 'none') {
@@ -125,6 +127,8 @@ function toggleOrbitOutlines() {
 
 toggleInfoButton.addEventListener('click', toggleInfo)
 toggleOrbitOutlinesButton.addEventListener('click', toggleOrbitOutlines)
+previousObjectButton.addEventListener('click', slideLeft)
+nextObjectButton.addEventListener('click', slideRight)
 
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') slideRight()
